@@ -6,7 +6,7 @@ In this lab you will provision a [PKI Infrastructure](https://en.wikipedia.org/w
 
 You can do these on any machine with `openssl` on it. But you should be able to copy the generated files to the provisioned VMs. Or just do these from one of the master nodes.
 
-In our case we do it on the master-1 node, as we have set it up to be the administrative client.
+In our case we do it on the master0 node, as we have set it up to be the administrative client.
 
 
 ## Certificate Authority
