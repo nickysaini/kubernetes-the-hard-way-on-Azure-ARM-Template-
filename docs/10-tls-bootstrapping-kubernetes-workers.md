@@ -40,7 +40,7 @@ So let's get started!
 Copy the ca certificate to the worker node:
 
 ```
-scp ca.crt worker-2:~/
+scp ca.crt worker1:~/
 ```
 
 ## Step 1 Configure the Binaries on the Worker node
@@ -217,13 +217,13 @@ kubectl create -f auto-approve-renewals-for-nodes.yaml
 
 It is now time to configure the second worker to TLS bootstrap using the token we generated
 
-For worker-1 we started by creating a kubeconfig file with the TLS certificates that we manually generated.
+For worker0 we started by creating a kubeconfig file with the TLS certificates that we manually generated.
 Here, we don't have the certificates yet. So we cannot create a kubeconfig file. Instead we create a bootstrap-kubeconfig file with information about the token we created.
 
-This is to be done on the `worker-2` node.
+This is to be done on the `worker1` node.
 
 ```
-sudo kubectl config --kubeconfig=/var/lib/kubelet/bootstrap-kubeconfig set-cluster bootstrap --server='https://192.168.5.30:6443' --certificate-authority=/var/lib/kubernetes/ca.crt
+sudo kubectl config --kubeconfig=/var/lib/kubelet/bootstrap-kubeconfig set-cluster bootstrap --server='https://10.0.0.50:6443' --certificate-authority=/var/lib/kubernetes/ca.crt
 sudo kubectl config --kubeconfig=/var/lib/kubelet/bootstrap-kubeconfig set-credentials kubelet-bootstrap --token=07401b.f395accd246ae52d
 sudo kubectl config --kubeconfig=/var/lib/kubelet/bootstrap-kubeconfig set-context bootstrap --user=kubelet-bootstrap --cluster=bootstrap
 sudo kubectl config --kubeconfig=/var/lib/kubelet/bootstrap-kubeconfig use-context bootstrap
@@ -334,7 +334,7 @@ apiVersion: kubeproxy.config.k8s.io/v1alpha1
 clientConnection:
   kubeconfig: "/var/lib/kube-proxy/kubeconfig"
 mode: "iptables"
-clusterCIDR: "192.168.5.0/24"
+clusterCIDR: "10.0.0.0/24"
 EOF
 ```
 
@@ -366,7 +366,7 @@ EOF
   sudo systemctl start kubelet kube-proxy
 }
 ```
-> Remember to run the above commands on worker node: `worker-2`
+> Remember to run the above commands on worker node: `worker1`
 
 
 ## Step 9 Approve Server CSR
@@ -375,7 +375,7 @@ EOF
 
 ```
 NAME                                                   AGE   REQUESTOR                 CONDITION
-csr-95bv6                                              20s   system:node:worker-2      Pending
+csr-989x5                                              10s   system:node:worker1       Pending
 ```
 
 
@@ -389,15 +389,15 @@ Approve
 List the registered Kubernetes nodes from the master node:
 
 ```
-master-1$ kubectl get nodes --kubeconfig admin.kubeconfig
+master0$ kubectl get nodes --kubeconfig admin.kubeconfig
 ```
 
 > output
 
 ```
 NAME       STATUS   ROLES    AGE   VERSION
-worker-1   NotReady   <none>   93s   v1.13.0
-worker-2   NotReady   <none>   93s   v1.13.0
+worker0   NotReady   <none>   15m   v1.13.0
+worker1   NotReady   <none>   94s   v1.13.0
 ```
 Note: It is OK for the worker node to be in a NotReady state. That is because we haven't configured Networking yet.
 
