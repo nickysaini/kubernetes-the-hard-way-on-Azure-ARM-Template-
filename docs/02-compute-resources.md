@@ -1,99 +1,43 @@
 # Provisioning Compute Resources
 
-Note: You must have VirtualBox and Vagrant configured at this point
+Note: You must have Azure Subscription with enough permission to create Azure resources.
 
-Download this github repository and cd into the vagrant folder
+Download this github repository and Deploy the templates provided in Auzre folder.
 
-`git clone https://github.com/mmumshad/kubernetes-the-hard-way.git`
+`git clone https://github.com/nickysaini/kubernetes-the-hard-way-on-Azure-ARMTemplate.git`
 
-CD into vagrant directory
+Using Azure Portal.
+`https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-template-deploy-portal`
 
-`cd kubernetes-the-hard-way\vagrant`
-
-Run Vagrant up
-
-`vagrant up`
+Using Azure Powershell & cloud Shell
+`https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-template-deploy`
 
 
 This does the below:
 
-- Deploys 5 VMs - 2 Master, 2 Worker and 1 Loadbalancer with the name 'kubernetes-ha-* '
-    > This is the default settings. This can be changed at the top of the Vagrant file
+- Deploys Virtual Network with one subnet - 1,3,5 Master in AV Set with Managed disk, Worker nodes in AV Set with managed disk, 1 internal & External Loadbalancer and with publilc IP attched with external LB also all required ports are open on internal LB to allow communication with kubernetes control plane
+    > This is the default settings. This can be changed atin provided ARM templates. 
 
-- Set's IP addresses in the range 192.168.5
-
-    | VM            |  VM Name               | Purpose       | IP           | Forwarded Port   |
-    | ------------  | ---------------------- |:-------------:| ------------:| ----------------:|
-    | master-1      | kubernetes-ha-master-1 | Master        | 192.168.5.11 |     2711         |
-    | master-2      | kubernetes-ha-master-2 | Master        | 192.168.5.12 |     2712         |
-    | worker-1      | kubernetes-ha-worker-1 | Worker        | 192.168.5.21 |     2730         |
-    | worker-2      | kubernetes-ha-worker-2 | Worker        | 192.168.5.22 |     2721         |
-    | loadbalancer  | kubernetes-ha-lb       | LoadBalancer  | 192.168.5.30 |     2722         |
-
-    > These are the default settings. These can be changed in the Vagrant file
+- Default Set's IP addresses in the range 10.0.0.0/16 CIDR and subnet range 10.0.0.0/24
 
 - Add's a DNS entry to each of the nodes to access internet
     > DNS: 8.8.8.8
+To update DNS in all VM script added in Tools folder. 
 
-- Install's Docker on Worker nodes
-- Runs the below command on all nodes to allow for network forwarding in IP Tables.
-  This is required for kubernetes networking to function correctly.
-    > sysctl net.bridge.bridge-nf-call-iptables=1
+- Install's Docker on all Worker nodes
+To install docker on worker node script added in tool folder.
 
 
 ## SSH to the nodes
 
-There are two ways to SSH into the nodes:
-
-### 1. SSH using Vagrant
-
-  From the directory you ran the `vagrant up` command, run `vagrant ssh <vm>` for example `vagrant ssh master-1`.
-  > Note: Use VM field from the above table and not the vm name itself.
-
-### 2. SSH Using SSH Client Tools
-
 Use your favourite SSH Terminal tool (putty).
-
-Use the above IP addresses. Username and password based SSH is disabled by default.
-Vagrant generates a private key for each of these VMs. It is placed under the .vagrant folder (in the directory you ran the `vagrant up` command from) at the below path for each VM:
-
-**Private Key Path:** `.vagrant/machines/<machine name>/virtualbox/private_key`
-
-**Username:** `vagrant`
 
 
 ## Verify Environment
 
 - Ensure all VMs are up
-- Ensure VMs are assigned the above IP addresses
-- Ensure you can SSH into these VMs using the IP and private keys
+- Ensure LBs are created.
+- Ensure you can SSH into these VMs using the IP and private keys or password
 - Ensure the VMs can ping each other
-- Ensure the worker nodes have Docker installed on them. Version: 18.06
+- Ensure the worker nodes have Docker installed on them.
   > command `sudo docker version`
-
-## Troubleshooting Tips
-
-If any of the VMs failed to provision, or is not configured correct, delete the vm using the command:
-
-`vagrant destroy <vm>`
-
-Then reprovision. Only the missing VMs will be re-provisioned
-
-`vagrant up`
-
-
-Sometimes the delete does not delete the folder created for the vm and throws the below error.
-
-VirtualBox error:
-
-    VBoxManage.exe: error: Could not rename the directory 'D:\VirtualBox VMs\ubuntu-bionic-18.04-cloudimg-20190122_1552891552601_76806' to 'D:\VirtualBox VMs\kubernetes-ha-worker-2' to save the settings file (VERR_ALREADY_EXISTS)
-    VBoxManage.exe: error: Details: code E_FAIL (0x80004005), component SessionMachine, interface IMachine, callee IUnknown
-    VBoxManage.exe: error: Context: "SaveSettings()" at line 3105 of file VBoxManageModifyVM.cpp
-
-In such cases delete the VM, then delete teh VM folder and then re-provision
-
-`vagrant destroy <vm>`
-
-`rmdir "<path-to-vm-folder>\kubernetes-ha-worker-2"`
-
-`vagrant up`
