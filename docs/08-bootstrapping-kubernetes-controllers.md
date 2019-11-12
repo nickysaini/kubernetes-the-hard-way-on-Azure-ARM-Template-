@@ -220,7 +220,7 @@ Load balancer to front the Kubernetes API Servers alreday provisioned with ARM t
 Make a HTTP request for the Kubernetes version info:
 
 ```
-curl  https://192.168.5.30:6443/version -k
+curl  https://10.0.0.50:6443/version -k
 ```
 
 > output
