@@ -6,7 +6,7 @@ In this lab you will provision a [PKI Infrastructure](https://en.wikipedia.org/w
 
 You can do these on any machine with `openssl` on it. But you should be able to copy the generated files to the provisioned VMs. Or just do these from one of the master nodes.
 
-In our case we do it on the master-1 node, as we have set it up to be the administrative client.
+In our case we do it on the master0 node, as we have set it up to be the administrative client.
 
 
 ## Certificate Authority
@@ -135,7 +135,6 @@ The kube-apiserver certificate requires all names that various components may re
 The `openssl` command cannot take alternate names as command line parameter. So we must create a `conf` file for it:
 
 ```
-cat > openssl.cnf <<EOF
 [req]
 req_extensions = v3_req
 distinguished_name = req_distinguished_name
@@ -150,10 +149,11 @@ DNS.2 = kubernetes.default
 DNS.3 = kubernetes.default.svc
 DNS.4 = kubernetes.default.svc.cluster.local
 IP.1 = 10.96.0.1
-IP.2 = 192.168.5.11
-IP.3 = 192.168.5.12
-IP.4 = 192.168.5.30
-IP.5 = 127.0.0.1
+IP.2 = 10.0.0.6
+IP.3 = 10.0.0.7
+IP.4 = 10.0.0.8
+IP.5 = 10.0.0.50
+IP.6 = 127.0.0.1
 EOF
 ```
 
@@ -189,9 +189,10 @@ basicConstraints = CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 subjectAltName = @alt_names
 [alt_names]
-IP.1 = 192.168.5.11
-IP.2 = 192.168.5.12
-IP.3 = 127.0.0.1
+IP.1 = 10.0.0.6
+IP.2 = 10.0.0.7
+IP.3 = 10.0.0.8
+IP.4 = 127.0.0.1
 EOF
 ```
 
@@ -235,7 +236,7 @@ service-account.crt
 Copy the appropriate certificates and private keys to each controller instance:
 
 ```
-for instance in master-1 master-2; do
+for instance in master0 master1 master2; do
   scp ca.crt ca.key kube-apiserver.key kube-apiserver.crt \
     service-account.key service-account.crt \
     etcd-server.key etcd-server.crt \

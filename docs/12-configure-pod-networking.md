@@ -4,7 +4,7 @@ We chose to use CNI - [weave](https://www.weave.works/docs/net/latest/kubernetes
 
 ### Install CNI plugins
 
-Download the CNI Plugins required for weave on each of the worker nodes - `worker-1` and `worker-2`
+Download the CNI Plugins required for weave on each of the worker nodes - `worker0` and `worker1`
 
 `wget https://github.com/containernetworking/plugins/releases/download/v0.7.5/cni-plugins-amd64-v0.7.5.tgz`
 
@@ -14,7 +14,7 @@ Extract it to /opt/cni/bin directory
 
 ### Deploy Weave Network
 
-Deploy weave network. Run only once on the `master` node.
+Deploy weave network. Run only once on the `master0` node.
 
 
 `kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"`
@@ -26,15 +26,15 @@ Weave uses POD CIDR of `10.32.0.0/12` by default.
 List the registered Kubernetes nodes from the master node:
 
 ```
-master-1$ kubectl get pods -n kube-system
+master0$  kubectl get pods -n kube-system -o wide
 ```
 
 > output
 
 ```
-NAME              READY   STATUS    RESTARTS   AGE
-weave-net-58j2j   2/2     Running   0          89s
-weave-net-rr5dk   2/2     Running   0          89s
+NAME              READY   STATUS    RESTARTS   AGE   IP         NODE      NOMINATED NODE   READINESS GATES
+weave-net-bjxj8   2/2     Running   0          41s   10.0.0.4   worker0   <none>           <none>
+weave-net-jplsn   2/2     Running   0          41s   10.0.0.5   worker1   <none>           <none>
 ```
 
 Next: [Kube API Server to Kubelet Connectivity](13-kube-apiserver-to-kubelet.md)
