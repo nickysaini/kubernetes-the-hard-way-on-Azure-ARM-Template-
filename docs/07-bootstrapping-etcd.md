@@ -1,10 +1,10 @@
 # Bootstrapping the etcd Cluster
 
-Kubernetes components are stateless and store cluster state in [etcd](https://github.com/coreos/etcd). In this lab you will bootstrap a two node etcd cluster and configure it for high availability and secure remote access.
+Kubernetes components are stateless and store cluster state in [etcd](https://github.com/coreos/etcd). In this lab you will bootstrap a three node etcd cluster and configure it for high availability and secure remote access.
 
 ## Prerequisites
 
-The commands in this lab must be run on each controller instance: `master-1`, and `master-2`. Login to each of these using an SSH terminal.
+The commands in this lab must be run on each controller instance: `master0`, `master1` and `master2`. Login to each of these using an SSH terminal.
 
 ### Running commands in parallel with tmux
 
@@ -75,7 +75,7 @@ ExecStart=/usr/local/bin/etcd \\
   --listen-client-urls https://${INTERNAL_IP}:2379,https://127.0.0.1:2379 \\
   --advertise-client-urls https://${INTERNAL_IP}:2379 \\
   --initial-cluster-token etcd-cluster-0 \\
-  --initial-cluster master-1=https://192.168.5.11:2380,master-2=https://192.168.5.12:2380 \\
+  --initial-cluster master0=https://10.0.0.8:2380,master1=https://10.0.0.6:2380,master2=https://10.0.0.7:2380 \\
   --initial-cluster-state new \\
   --data-dir=/var/lib/etcd
 Restart=on-failure
@@ -96,7 +96,7 @@ EOF
 }
 ```
 
-> Remember to run the above commands on each controller node: `master-1`, and `master-2`.
+> Remember to run the above commands on each controller node: `master0`,`master1` and `master2`.
 
 ## Verification
 
@@ -113,8 +113,9 @@ sudo ETCDCTL_API=3 etcdctl member list \
 > output
 
 ```
-45bf9ccad8d8900a, started, master-2, https://192.168.5.12:2380, https://192.168.5.12:2379
-54a5796a6803f252, started, master-1, https://192.168.5.11:2380, https://192.168.5.11:2379
+32fe84c083361ba2, started, master0, https://10.0.0.8:2380, https://10.0.0.8:2379
+76d0cbd2df363f9e, started, master1, https://10.0.0.6:2380, https://10.0.0.6:2379
+e2f5d6f38f748493, started, master2, https://10.0.0.7:2380, https://10.0.0.7:2379
 ```
 
 Next: [Bootstrapping the Kubernetes Control Plane](08-bootstrapping-kubernetes-controllers.md)
