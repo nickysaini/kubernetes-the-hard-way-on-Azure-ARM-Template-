@@ -8,11 +8,11 @@ In this lab you will generate a kubeconfig file for the `kubectl` command line u
 
 Each kubeconfig requires a Kubernetes API Server to connect to. To support high availability the IP address assigned to the external load balancer fronting the Kubernetes API Servers will be used.
 
-Generate a kubeconfig file suitable for authenticating as the `admin` user:
-
+Generate a kubeconfig file suitable for authenticating as the `admin` user from external network.
+Public IP created with ARM Templates
 ```
 {
-  KUBERNETES_LB_ADDRESS=192.168.5.30
+  KUBERNETES_LB_ADDRESS=<public IP> 
 
   kubectl config set-cluster kubernetes-the-hard-way \
     --certificate-authority=ca.crt \
@@ -58,9 +58,9 @@ kubectl get nodes
 > output
 
 ```
-NAME       STATUS   ROLES    AGE    VERSION
-worker-1   NotReady    <none>   118s   v1.13.0
-worker-2   NotReady    <none>   118s   v1.13.0
+NAME      STATUS     ROLES    AGE     VERSION
+worker0   NotReady   <none>   18m     v1.13.0
+worker1   NotReady   <none>   4m41s   v1.13.0
 ```
 Note: It is OK for the worker node to be in a `NotReady` state. Worker nodes will come into `Ready` state once networking is configured.
 
