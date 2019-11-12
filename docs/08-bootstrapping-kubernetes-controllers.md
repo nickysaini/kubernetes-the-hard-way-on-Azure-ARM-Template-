@@ -4,7 +4,7 @@ In this lab you will bootstrap the Kubernetes control plane across 2 compute ins
 
 ## Prerequisites
 
-The commands in this lab must be run on each controller instance: `master-1`, and `master-2`. Login to each controller instance using SSH Terminal. Example:
+The commands in this lab must be run on each controller instance: `master0`, `master1` and `master-2`. Login to each controller instance using SSH Terminal. Example:
 
 ### Running commands in parallel with tmux
 
@@ -55,7 +55,7 @@ Install the Kubernetes binaries:
 The instance internal IP address will be used to advertise the API Server to members of the cluster. Retrieve the internal IP address for the current compute instance:
 
 ```
-INTERNAL_IP=$(ip addr show enp0s8 | grep "inet " | awk '{print $2}' | cut -d / -f 1)
+INTERNAL_IP=$(ip addr show eth0 | grep "inet " | awk '{print $2}' | cut -d / -f 1)
 ```
 
 Verify it is set
@@ -90,7 +90,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --etcd-cafile=/var/lib/kubernetes/ca.crt \\
   --etcd-certfile=/var/lib/kubernetes/etcd-server.crt \\
   --etcd-keyfile=/var/lib/kubernetes/etcd-server.key \\
-  --etcd-servers=https://192.168.5.11:2379,https://192.168.5.12:2379 \\
+  --etcd-servers=https://10.0.0.8:2379,https://10.0.0.6:2379,https://10.0.0.7:2379 \\
   --event-ttl=1h \\
   --encryption-provider-config=/var/lib/kubernetes/encryption-config.yaml \\
   --kubelet-certificate-authority=/var/lib/kubernetes/ca.crt \\
@@ -131,7 +131,7 @@ Documentation=https://github.com/kubernetes/kubernetes
 [Service]
 ExecStart=/usr/local/bin/kube-controller-manager \\
   --address=0.0.0.0 \\
-  --cluster-cidr=192.168.5.0/24 \\
+  --cluster-cidr=10.0.0.0/24 \\
   --cluster-name=kubernetes \\
   --cluster-signing-cert-file=/var/lib/kubernetes/ca.crt \\
   --cluster-signing-key-file=/var/lib/kubernetes/ca.key \\
@@ -203,45 +203,17 @@ kubectl get componentstatuses --kubeconfig admin.kubeconfig
 NAME                 STATUS    MESSAGE              ERROR
 controller-manager   Healthy   ok
 scheduler            Healthy   ok
-etcd-0               Healthy   {"health": "true"}
-etcd-1               Healthy   {"health": "true"}
+etcd-0               Healthy   {"health":"true"}
+etcd-1               Healthy   {"health":"true"}
+etcd-2               Healthy   {"health":"true"}
 ```
 
-> Remember to run the above commands on each controller node: `master-1`, and `master-2`.
+> Remember to run the above commands on each controller node: `master0`, `master1`, and `master2`.
 
 ## The Kubernetes Frontend Load Balancer
 
-In this section you will provision an external load balancer to front the Kubernetes API Servers. The `kubernetes-the-hard-way` static IP address will be attached to the resulting load balancer.
+Load balancer to front the Kubernetes API Servers alreday provisioned with ARM templates also static IP address will be attached to the resulting load balancer.
 
-
-### Provision a Network Load Balancer
-
-```
-#Install HAProxy
-loadbalancer# sudo apt-get update && sudo apt-get install -y haproxy
-
-```
-
-```
-loadbalancer# cat <<EOF | sudo tee /etc/haproxy/haproxy.cfg 
-frontend kubernetes
-    bind 192.168.5.30:6443
-    option tcplog
-    mode tcp
-    default_backend kubernetes-master-nodes
-
-backend kubernetes-master-nodes
-    mode tcp
-    balance roundrobin
-    option tcp-check
-    server master-1 192.168.5.11:6443 check fall 3 rise 2
-    server master-2 192.168.5.12:6443 check fall 3 rise 2
-EOF
-```
-
-```
-loadbalancer# sudo service haproxy restart
-```
 
 ### Verification
 
