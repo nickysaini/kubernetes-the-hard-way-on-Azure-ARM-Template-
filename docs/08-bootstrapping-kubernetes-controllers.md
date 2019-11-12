@@ -220,7 +220,8 @@ Load balancer to front the Kubernetes API Servers alreday provisioned with ARM t
 Make a HTTP request for the Kubernetes version info:
 
 ```
-curl  https://10.0.0.50:6443/version -k
+curl  https://10.0.0.50:6443/version -k (Internal LB)
+curl  https://<public-IP>:6443/version -k (External LB)
 ```
 
 > output
