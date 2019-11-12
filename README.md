@@ -1,21 +1,14 @@
-> This tutorial is a modified version of the original developed by [Kelsey Hightower](https://github.com/kelseyhightower/kubernetes-the-hard-way).
+> This tutorial is a modified version of the original developed by [Kelsey Hightower](https://github.com/kelseyhightower/kubernetes-the-hard-way) and [Mumshad Mannambeth](https://github.com/mmumshad/kubernetes-the-hard-way)
 
-This repository holds the supporting material for the [Certified Kubernetes Administrators Course](https://kodekloud.com/p/certified-kubernetes-administrator-with-practice-tests). There are two major sections. 
+# Kubernetes The Hard Way On Azure using ARM Templates
 
-- [Kubernetes The Hard Way on VirtualBox](#kubernetes-the-hard-way-on-virtualbox)
-- [Answers to Practice Tests hosted on KodeKloud](/practice-questions-answers)
-
-
-# Kubernetes The Hard Way On VirtualBox
-
-This tutorial walks you through setting up Kubernetes the hard way on a local machine using VirtualBox.
+This tutorial walks you through setting up Kubernetes the hard way on Azure Using ARM Templates
 This guide is not for people looking for a fully automated command to bring up a Kubernetes cluster.
-If that's you then check out [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine), or the [Getting Started Guides](http://kubernetes.io/docs/getting-started-guides/).
+If that's you then most of cloud provider provide automated kubernetes solutions.
 
 Kubernetes The Hard Way is optimized for learning, which means taking the long route to ensure you understand each task required to bootstrap a Kubernetes cluster.
 
-This tutorial is a modified version of the original developed by [Kelsey Hightower](https://github.com/kelseyhightower/kubernetes-the-hard-way).
-While the original one uses GCP as the platform to deploy kubernetes,  we use VirtualBox and Vagrant to deploy a cluster on a local machine. If you prefer the cloud version, refer to the original one [here](https://github.com/kelseyhightower/kubernetes-the-hard-way)
+While the original one uses GCP as the platform to deploy kubernetes,  we use ARM Templates to deploy cluster on Azure. If you prefer the cloud version, refer to the original one [here](https://github.com/kelseyhightower/kubernetes-the-hard-way)
 
 Another difference is that we use Docker instead of containerd. There are a few other differences to the original and they are documented [here](docs/differences-to-original.md)
 
