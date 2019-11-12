@@ -2,11 +2,11 @@
 
 First identify a system from where you will perform administrative tasks, such as creating certificates, kubeconfig files and distributing them to the different VMs.
 
-If you are on a Linux laptop, then your laptop could be this system. In my case I chose the master-1 node to perform administrative tasks. Whichever system you chose make sure that system is able to access all the provisioned VMs through SSH to copy files over.
+My case I chose the master0 node to perform administrative tasks. Whichever system you chose make sure that system is able to access all the provisioned VMs through SSH to copy files over.
 
 ## Access all VMs
 
-Generate Key Pair on master-1 node
+Generate Key Pair on master0 node
 `$ssh-keygen`
 
 Leave all settings to default.
