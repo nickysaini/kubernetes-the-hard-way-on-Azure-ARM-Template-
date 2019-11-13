@@ -49,5 +49,4 @@ service-account.pem
 service-account-csr.json
 .idea
 ubuntu-bionic*.log
-.vagrant
 temp

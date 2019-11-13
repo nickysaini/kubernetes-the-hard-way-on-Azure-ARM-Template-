@@ -12,7 +12,7 @@ Here are some examples of the review and justification process:
 - [#208](https://github.com/kelseyhightower/kubernetes-the-hard-way/pull/208)
 - [#282](https://github.com/kelseyhightower/kubernetes-the-hard-way/pull/282)
 
-## Notes on minutiae
+## Notes
 
 If you find a bug that breaks the guide, please do submit it. If you are considering  a minor copy edit for tone, grammar, or simple inconsistent whitespace, consider the tradeoff between maintainer time and community benefit before investing too much of your time.
 
