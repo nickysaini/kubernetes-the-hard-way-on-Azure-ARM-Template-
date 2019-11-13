@@ -1,15 +1,15 @@
 # Differences between original and this solution
 
-Platform: I use VirtualBox to setup a local cluster, the original one uses GCP
+Platform: I use Azure VMs and all infra get provisioned using ARM Template, the original one uses GCP and Mumshad used Virtual box.
 
-Nodes: 2 Master and 2 Worker vs 2 Master and 3 Worker nodes
+Nodes: 1,3,5 Master and Worker as defined in Parametes
 
 Configure 1 worker node normally
 and the second one with TLS bootstrap
 
-Node Names: I use worker-1 worker-2 instead of worker-0 worker-1
+Node Names: I use worker0 worker1 same apply to master node as well.
 
-IP Addresses: I use statically assigned IPs on private network
+IP Addresses: I use statically assigned IPs on private network assigned from Vnet
 
 Certificate File Names: I use <name>.crt for public certificate and <name>.key for private key file. Whereas original one uses <name>-.pem for certificate and <name>-key.pem for private key.
 
@@ -17,5 +17,3 @@ I generate separate certificates for etcd-server instead of using kube-apiserver
 
 Network:
 We use weavenet
-
-Add E2E Tests

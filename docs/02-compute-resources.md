@@ -16,9 +16,9 @@ Using Azure Powershell & cloud Shell
 This does the below:
 
 - Deploys Virtual Network with one subnet - 1,3,5 Master in AV Set with Managed disk, Worker nodes in AV Set with managed disk, 1 internal & External Loadbalancer and with publilc IP attched with external LB also all required ports are open on internal LB to allow communication with kubernetes control plane
-    > This is the default settings. This can be changed atin provided ARM templates. 
+    > This is the default settings. This can be changed in provided ARM templates. 
 
-- Default Set's IP addresses in the range 10.0.0.0/16 CIDR and subnet range 10.0.0.0/24
+- Default Set's IP addresses in the range 10.0.0.0/16 CIDR and subnet range 10.0.0.0/24. All VMs master & worker will be assigned static internal IP.
 
 - Add's a DNS entry to each of the nodes to access internet
     > DNS: 8.8.8.8

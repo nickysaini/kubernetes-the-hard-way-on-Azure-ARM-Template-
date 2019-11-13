@@ -46,5 +46,3 @@ Kubernetes The Hard Way guides you through bootstrapping a highly available Kube
 * [Kube API Server to Kubelet Configuration](docs/13-kube-apiserver-to-kubelet.md)
 * [Deploying the DNS Cluster Add-on](docs/14-dns-addon.md)
 * [Smoke Test](docs/15-smoke-test.md)
-* [E2E Test](docs/16-e2e-tests.md)
-* [Extra - Dynamic Kubelet Configuration](docs/17-extra-dynamic-kubelet-configuration.md)
